@@ -1,15 +1,22 @@
-const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
 
-const connectDB = async () => {
+const uri = 'mongodb+srv://michelrabar:<MONGO>@cluster0.seukvd5.mongodb.net/?retryWrites=true&w=majority';
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+let db;
+
+async function connectToDatabase() {
     try {
-        const conn = await mongoose.connect('mongodb+srv://michelrabar:<Cluster1>@cluster0.seukvd5.mongodb.net', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
+        await client.connect();
+        console.log('Connected to MongoDB');
+        db = client.db('Cluster0');
     } catch (error) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
+        console.error('Error connecting to MongoDB:', error);
     }
-};
+}
 
+function getDatabase() {
+    return db;
+}
+
+module.exports = { connectToDatabase, getDatabase };
