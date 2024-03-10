@@ -21,7 +21,6 @@ mongoose.connect(config.database)
 
 app.use(express.json());
 app.use(userRoutes);
-app.use(reciperoute);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); app.listen(port, () => {
     console.log(`App is running on ${port}`);
