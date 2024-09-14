@@ -1,4 +1,3 @@
 module.exports = {
-    database: "mongodb+srv://laurap:mamasanja@cluster0.3yoxr6m.mongodb.net/",
-    secret: "password"
+    database: 'mongodb+srv://gogojad10:samoljubav@cluster0.gdlev.mongodb.net/mydatabase?retryWrites=true&w=majority'
 };
