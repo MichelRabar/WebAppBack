@@ -8,7 +8,7 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Proverite da li postoji folder 'uploads', ako ne, kreirajte ga
+// Projeri da li postoji folder 'uploads', ako ne, kreirajte ga
 if (!fs.existsSync('uploads')) {
   fs.mkdirSync('uploads');
 }
@@ -38,7 +38,7 @@ router.post('/register', upload.single('slika'), async (req, res) => {
     const { ime, prezime, visina, kilaza, zdrastveniProblemi, lozinka, username } = req.body;
     const slika = req.file ? req.file.path : ''; // Putanja do slike
 
-    // Validacija ulaznih podataka
+    // provjera ulaznih podataka
     if (!ime || !prezime || !username || !lozinka) {
       return res.status(400).json({ message: 'Svi obavezni podaci moraju biti popunjeni.' });
     }
@@ -83,7 +83,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Korisničko ime ili lozinka nisu ispravni.' });
     }
 
-    // Proveriti da li lozinka odgovara
+    // Provejera da li lozinka odgovara
     const isMatch = await bcrypt.compare(lozinka, user.lozinka);
     if (!isMatch) {
       return res.status(401).json({ message: 'Korisničko ime ili lozinka nisu ispravni.' });
@@ -125,28 +125,28 @@ router.get('/profile', async (req, res) => {
 });
 // Ruta za preuzimanje profila
 router.get('/meals', async (req, res) => {
-    try {
-      // Pretpostavljamo da korisnik dolazi iz JWT tokena, tako da uzimamo id korisnika iz tokena
-      const token = req.headers.authorization?.split(' ')[1]; // Pretpostavljamo da je token u formatu "Bearer token"
-      if (!token) {
-        return res.status(401).json({ message: 'Niste autorizovani.' });
-      }
-      const decoded = jwt.verify(token, 'your_jwt_secret');
-      const userId = decoded.userId;
-  
-      // Pronaći korisnika u bazi
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: 'Korisnik nije pronađen.' });
-      }
-  
-      // Vratiti korisničke podatke i putanju do slike
-      res.status(200).json(user);
-    } catch (error) {
-      console.error('Greška pri preuzimanju profila:', error);
-      res.status(500).json({ message: 'Greška pri preuzimanju profila.' });
+  try {
+    // Pretpostavljamo da korisnik dolazi iz JWT tokena, tako da uzimamo id korisnika iz tokena
+    const token = req.headers.authorization?.split(' ')[1]; // Pretpostavljamo da je token u formatu "Bearer token"
+    if (!token) {
+      return res.status(401).json({ message: 'Niste autorizovani.' });
     }
-  });
+    const decoded = jwt.verify(token, 'your_jwt_secret');
+    const userId = decoded.userId;
+
+    // Pronaći korisnika u bazi
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'Korisnik nije pronađen.' });
+    }
+
+    // Vratiti korisničke podatke i putanju do slike
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Greška pri preuzimanju profila:', error);
+    res.status(500).json({ message: 'Greška pri preuzimanju profila.' });
+  }
+});
 
 // Ruta za preuzimanje slike
 router.get('/uploads/:filename', (req, res) => {
@@ -160,7 +160,7 @@ router.get('/trenerId/:username', async (req, res) => {
   try {
     const username = req.params.username;
     const user = await User.findOne({ username }).select('trenerId');
-    
+
     if (!user) {
       return res.status(404).json({ message: 'Korisnik nije pronađen' });
     }
@@ -230,14 +230,14 @@ router.put('/profile', upload.single('slika'), async (req, res) => {
 
 
 router.get('/trainers', async (req, res) => {
-    try {
-      const trainers = await User.find({ jeTrener: true }); // Filtriranje prema 'jeTrener'
-      res.json(trainers);
-    } catch (error) {
-      console.error('Greška pri dobijanju trenera:', error);
-      res.status(500).json({ message: 'Greška pri dobijanju trenera.' });
-    }
-  });
+  try {
+    const trainers = await User.find({ jeTrener: true }); // Filtriranje prema 'jeTrener'
+    res.json(trainers);
+  } catch (error) {
+    console.error('Greška pri dobijanju trenera:', error);
+    res.status(500).json({ message: 'Greška pri dobijanju trenera.' });
+  }
+});
 
 // Eksportovanje ruta
 module.exports = router;

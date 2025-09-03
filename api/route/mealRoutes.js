@@ -7,8 +7,8 @@ const jwt = require('jsonwebtoken'); // Ako koristite JWT za autentifikaciju
 router.post('/', async (req, res) => {
   try {
     const { date, breakfast, lunch, dinner, trenerid } = req.body;
-    
-    // Provera da li su svi obavezni parametri prisutni
+
+    // Provjera da li su svi obavezni parametri prisutni
     if (!date || !breakfast || !lunch || !dinner || !trenerid) {
       return res.status(400).json({ message: 'Svi obavezni parametri su potrebni' });
     }
@@ -55,12 +55,12 @@ router.put('/:id', async (req, res) => {
     const mealId = req.params.id;
     const { date, breakfast, lunch, dinner } = req.body;
 
-    // Dobavi userId iz tokena (ako je deo JWT tokena)
+    // Dobavi userId iz tokena (ako je dio JWT tokena)
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
       return res.status(401).json({ message: 'Niste autorizovani.' });
     }
-    
+
     const decoded = jwt.verify(token, 'your_jwt_secret');
     const userId = decoded.userId;
 
@@ -84,7 +84,7 @@ router.put('/:id', async (req, res) => {
     };
 
     const updatedMeal = await Meal.findByIdAndUpdate(mealId, updateData, { new: true });
-    
+
     res.json(updatedMeal);
   } catch (error) {
     console.error('Greška pri ažuriranju obroka:', error);
