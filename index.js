@@ -16,7 +16,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Middleware za parsiranje JSON tela
+// Middleware za parsiranje JSON 
 app.use(express.json());
 
 // Middleware za parsiranje URL-encoded podataka
@@ -32,7 +32,7 @@ app.use('/api/meals', mealRoutes);
 app.use('/api/workouts', workoutRoutes);
 
 
-// Middleware za serviranje statičkih fajlova (slike)
+// Middleware za serviranje statičkih files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Konekcija sa MongoDB
@@ -42,12 +42,12 @@ mongoose.connect(db.database, { useNewUrlParser: true, useUnifiedTopology: true 
   .catch(err => console.log('MongoDB connection error:', err));
 
 
-  const Trainer = mongoose.model('user', new mongoose.Schema({
-    trenerId: String,
-    // ostala polja
-  }));
-  
- 
+const Trainer = mongoose.model('user', new mongoose.Schema({
+  trenerId: String,
+  // ostala polja
+}));
+
+
 // Pokretanje servera
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
