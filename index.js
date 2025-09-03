@@ -16,10 +16,10 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Middleware za parsiranje JSON 
+// Middleware za  JSON 
 app.use(express.json());
 
-// Middleware za parsiranje URL-encoded podataka
+// Middleware za  URL-encoded podataka
 app.use(express.urlencoded({ extended: true }));
 // Endpoint za dodavanje obroka
 
